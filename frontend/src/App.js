@@ -6,9 +6,18 @@ import ProductScreen from './screens/ProductScreen';
 function App() {
   return (
     <BrowserRouter>
-      <div>
+      <div className="d-flex flex-column site-container">
         <header>
-          <Link to={'/'}>Amazona</Link>
+          <nav className="navbar bg-dark">
+            <div className="container-fluid">
+              <Link
+                to={'/'}
+                className="text-light text-decoration-none navbar-brand mb-0 h1"
+              >
+                Amazona
+              </Link>
+            </div>
+          </nav>
         </header>
         <main>
           <Routes>
@@ -16,6 +25,9 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </main>
+        <footer>
+          <div className="text-center">All rights reserved</div>
+        </footer>
       </div>
     </BrowserRouter>
   );
