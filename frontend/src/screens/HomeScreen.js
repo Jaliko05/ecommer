@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
+import Product from '../components/Product.js';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -49,22 +50,13 @@ const HomeScreen = () => {
         ) : error ? (
           <div>error</div>
         ) : (
-          products.map((product) => (
-            <div className="product" key={product.slug}>
-              <Link to={`/product/${product.slug}`}>
-                <img src={product.image} alt={product.name}></img>
-              </Link>
-              <div className="product-info">
-                <Link to={`/product/${product.slug}`}>
-                  <p>{product.name}</p>
-                </Link>
-                <p>
-                  <strong>${product.price}</strong>
-                </p>
-                <button>Add to cart</button>
+          <div className="row">
+            {products.map((product) => (
+              <div sm={3} md={4} ld={3} className="col mb-3" key={product.slug}>
+                <Product product={product}></Product>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
       </div>
     </div>
