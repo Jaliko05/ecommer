@@ -4,7 +4,8 @@ import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
 import Product from '../components/Product.js';
-
+import { Helmet } from 'react-helmet-async';
+import { LoandingBox } from '../components/LoandingBox.js';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -43,12 +44,17 @@ const HomeScreen = () => {
   }, []);
   return (
     <div>
+      <Helmet>
+        <title>Amazona</title>
+      </Helmet>
       <h1>Feacture Products</h1>
       <div className="products">
         {loanding ? (
-          <div>loanding</div>
+          <LoandingBox />
         ) : error ? (
-          <div>error</div>
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
         ) : (
           <div className="row">
             {products.map((product) => (

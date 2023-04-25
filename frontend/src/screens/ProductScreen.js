@@ -3,6 +3,8 @@ import { useEffect, useReducer } from 'react';
 import logger from 'use-reducer-logger';
 import axios from 'axios';
 import Rating from '../components/Rating.js';
+import { Helmet } from 'react-helmet-async';
+import { LoandingBox } from '../components/LoandingBox.js';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -38,68 +40,76 @@ const ProductScreen = () => {
     };
     fetchData();
   }, [slug]);
-  return loanding ? (
-    <div>Loanding...</div>
-  ) : error ? (
-    <div>{error}</div>
-  ) : (
+  return (
     <div className="products">
-      <div className="row">
-        <div className="col col-md-6 d-flex justify-content-center">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="img-large"
-          ></img>
+      {loanding ? (
+        <LoandingBox />
+      ) : error ? (
+        <div className="alert alert-danger" role="alert">
+          {error}
         </div>
-        <div className="col col-md-3">
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <h1>{product.name}</h1>
-            </li>
-            <li className="list-group-item">
-              <Rating
-                rating={product.rating}
-                numReviews={product.numReviews}
-              ></Rating>
-            </li>
-            <li className="list-group-item">Price: ${product.price}</li>
-            <li className="list-group-item">
-              Description: ${product.description}
-            </li>
-          </ul>
-        </div>
-        <div className="col col-md-3">
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <div className="row">
-                <div className="col">Price:</div>
-                <div className="col">${product.price}</div>
-              </div>
-            </li>
-            <li className="list-group-item">
-              <div className="row">
-                <div className="col">Status:</div>
-                <div className="col">
-                  {product.countInStock > 0 ? (
-                    <div className="badge text-bg-success"> In Stock</div>
-                  ) : (
-                    <div className="badge text-bg-danger">Unavailable</div>
-                  )}
-                </div>
-              </div>
-            </li>
+      ) : (
+        <div>
+          <div className="row">
+            <div className="col col-md-6 d-flex justify-content-center">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="img-large"
+              ></img>
+            </div>
+            <div className="col col-md-3">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                  <Helmet>
+                    <title>{product.name}</title>
+                  </Helmet>
+                </li>
+                <li className="list-group-item">
+                  <Rating
+                    rating={product.rating}
+                    numReviews={product.numReviews}
+                  ></Rating>
+                </li>
+                <li className="list-group-item">Price: ${product.price}</li>
+                <li className="list-group-item">
+                  Description: ${product.description}
+                </li>
+              </ul>
+            </div>
+            <div className="col col-md-3">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col">Price:</div>
+                    <div className="col">${product.price}</div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col">Status:</div>
+                    <div className="col">
+                      {product.countInStock > 0 ? (
+                        <div className="badge text-bg-success"> In Stock</div>
+                      ) : (
+                        <div className="badge text-bg-danger">Unavailable</div>
+                      )}
+                    </div>
+                  </div>
+                </li>
 
-            {product.countInStock > 0 && (
-              <li className="list-group-item">
-                <div className="d-grid">
-                  <button className="btn btn-dark">Add to cart</button>
-                </div>
-              </li>
-            )}
-          </ul>
+                {product.countInStock > 0 && (
+                  <li className="list-group-item">
+                    <div className="d-grid">
+                      <button className="btn btn-dark">Add to cart</button>
+                    </div>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
