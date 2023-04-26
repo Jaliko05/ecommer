@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useReducer } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 import logger from 'use-reducer-logger';
 import axios from 'axios';
 import Rating from '../components/Rating.js';
 import { Helmet } from 'react-helmet-async';
 import { LoandingBox } from '../components/LoandingBox.js';
+import { Store } from '../Store.js';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -12,7 +13,7 @@ const reducer = (state, action) => {
       return { ...state, loanding: true };
     case 'FETCH_SUCCES':
       return { ...state, product: action.playload, loanding: false };
-    case 'FETCH_FAIL':
+    case 'FETCH_FAILD':
       return { ...state, loanding: false, error: action.playload };
     default:
       return state;
@@ -40,6 +41,14 @@ const ProductScreen = () => {
     };
     fetchData();
   }, [slug]);
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const addToCartHandler = () => {
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity: 1 },
+    });
+  };
   return (
     <div className="products">
       {loanding ? (
@@ -101,7 +110,12 @@ const ProductScreen = () => {
                 {product.countInStock > 0 && (
                   <li className="list-group-item">
                     <div className="d-grid">
-                      <button className="btn btn-dark">Add to cart</button>
+                      <button
+                        onClick={addToCartHandler}
+                        className="btn btn-dark"
+                      >
+                        Add to cart
+                      </button>
                     </div>
                   </li>
                 )}

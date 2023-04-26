@@ -57,6 +57,7 @@ const Rating = (props) => {
           }
         />
       </span>
+      <br />
       <span>{numReviews} Reviews</span>
     </div>
   );
